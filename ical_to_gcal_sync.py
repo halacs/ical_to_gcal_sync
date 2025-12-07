@@ -111,9 +111,9 @@ def get_gcal_events(calendar_id, service, from_time=None):
 
     # make an initial call, if this returns all events we don't need to do anything else,,,
     events_result = service.events().list(calendarId=calendar_id,
-                                         timeMin=from_time, 
-                                         singleEvents=True, 
-                                         orderBy='startTime', 
+                                         timeMin=from_time,
+                                         singleEvents=True,
+                                         orderBy='startTime',
                                          showDeleted=True).execute()
 
     events = events_result.get('items', [])
@@ -177,9 +177,9 @@ if __name__ == '__main__':
 
         # retrieve events from Google Calendar, starting from beginning of current day
         logger.info('> Retrieving events from Google Calendar')
-        logger.debug('from time: {},  today: {}, PAST_DAYS_TO_SYNC: {}'.format((today-timedelta(days=config.get('PAST_DAYS_TO_SYNC', 0))).isoformat(), today, config.get('PAST_DAYS_TO_SYNC', 0)))
-
-        gcal_events = get_gcal_events(calendar_id=feed['destination'], service=service, from_time=(today-timedelta(days=config.get('PAST_DAYS_TO_SYNC', 0))).isoformat())
+        start_date = (today-timedelta(days=config.get('PAST_DAYS_TO_SYNC', 0)+1)).isoformat()
+        logger.debug('from time: {},  today: {}, PAST_DAYS_TO_SYNC: {}'.format(start_date, today, config.get('PAST_DAYS_TO_SYNC', 0)))
+        gcal_events = get_gcal_events(calendar_id=feed['destination'], service=service, from_time=start_date)
 
         # retrieve events from the iCal feed
         if feed['files']:
