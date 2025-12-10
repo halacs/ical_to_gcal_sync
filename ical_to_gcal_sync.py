@@ -95,7 +95,7 @@ def get_current_events(feed_url_or_path, files):
 
             cal = events(feed_url_or_path, start=today-timedelta(days=config.get('PAST_DAYS_TO_SYNC', 0)), end=events_end, http=http)
     except Exception as e:
-        logger.error('> Error retrieving iCal data ({})'.format(e))
+        logger.fatal('> Error retrieving iCal data ({})'.format(e))
         return None
 
     return cal
